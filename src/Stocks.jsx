@@ -10,7 +10,6 @@ export default function StocksApp() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Form state
   const [ticker, setTicker] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
