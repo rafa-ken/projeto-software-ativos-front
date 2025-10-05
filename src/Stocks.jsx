@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useAuth0 } from '@auth0/auth0-react';
+import LoginButton from "./components/LoginButton";
 
 // StocksApp: front simples que faz GET /stocks e POST /stocks em http://localhost:8080
 // Ajuste BASE_URL se sua API estiver em outra porta (ex: http://localhost:3000)
@@ -15,12 +17,34 @@ export default function StocksApp() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [lastValue, setLastValue] = useState("");
-  const [dateLastValue, setDateLastValue] = useState("");
-  const [dateRegister, setDateRegister] = useState("");
+
+  const {
+    user,
+    isAuthenticated,
+    isLoading,
+    getAccessTokenSilently
+  } = useAuth0();
 
   useEffect(() => {
-    fetchStocks();
-  }, []);
+    const fetchToken = async () => {
+      try {
+        const accessToken = await getAccessTokenSilently();
+        setToken(accessToken);
+      } catch (e) {
+        console.error('Erro ao buscar token:', e);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchToken();
+      fetchStocks();
+    }
+  }, [isAuthenticated, getAccessTokenSilently]);
+
+
+  if (!isAuthenticated) {
+    return <LoginButton />;
+  }
 
   async function fetchStocks() {
     setLoading(true);
@@ -41,9 +65,7 @@ export default function StocksApp() {
     e.preventDefault();
     setError(null);
 
-    // Monta o DTO conforme seu backend espera
     const dto = {
-      // id normalmente não é enviado ao criar; mantenha null/omitido se sua API exigir
       ticker: ticker || null,
       name: name || null,
       description: description || null,
@@ -62,18 +84,13 @@ export default function StocksApp() {
         throw new Error(`Erro ao criar: ${res.status} ${text}`);
       }
 
-      // supondo que a API retorne o recurso criado
       const created = await res.json();
-
-      // atualiza lista local (re-fetch é mais confiável)
       setStocks(prev => [created, ...prev]);
 
-      // limpa formulário
       setTicker("");
       setName("");
       setDescription("");
       setLastValue("");
-      setDateLastValue("");
     } catch (err) {
       setError(err.message);
     }
@@ -87,6 +104,9 @@ export default function StocksApp() {
         <form onSubmit={handleCreate} className="space-y-3 mb-6">
           <div className="grid grid-cols-2 gap-3">
             <input value={ticker} onChange={e => setTicker(e.target.value)} placeholder="Ticker" className="p-2 border rounded" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
             <input value={name} onChange={e => setName(e.target.value)} placeholder="Nome" className="p-2 border rounded" />
           </div>
 
