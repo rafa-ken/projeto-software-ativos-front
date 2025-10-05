@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from "./components/LoginButton";
 
-// StocksApp: front simples que faz GET /stocks e POST /stocks em http://localhost:8080
-// Ajuste BASE_URL se sua API estiver em outra porta (ex: http://localhost:3000)
 const BASE_URL = "http://15.228.236.37:8080";
 
 
