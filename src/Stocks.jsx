@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from "./components/LoginButton";
+import LogoutButton from "./components/LogoutButton";
 
 const BASE_URL = "http://15.228.236.37:8080";
 
@@ -95,6 +96,13 @@ export default function StocksApp() {
 
   return (
     <div className="min-h-screen p-6 bg-gray-50 font-sans">
+
+              <div>
+          <img src={user.picture} alt={user.name} />
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+          <LogoutButton />
+        </div>
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow p-6">
         <h1 className="text-2xl font-bold mb-4">Stocks — criação e listagem</h1>
 
