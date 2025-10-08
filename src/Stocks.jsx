@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from "./components/LoginButton";
 import LogoutButton from "./components/LogoutButton";
 
-const BASE_URL = "";
+const BASE_URL = "http://15.228.236.37:8080/api";
 
 
 export default function StocksApp() {
@@ -47,7 +47,7 @@ export default function StocksApp() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${BASE_URL}/api/stocks`,{
+      const res = await fetch(`${BASE_URL}/stocks`,{
         headers: {
      //     Authorization: `Bearer ${token}`,
         },
@@ -74,7 +74,7 @@ export default function StocksApp() {
     };
 
     try {
-      const res = await fetch(`${BASE_URL}/api/stocks`, {
+      const res = await fetch(`${BASE_URL}/stocks`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
