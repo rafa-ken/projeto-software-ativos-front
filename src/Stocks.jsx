@@ -27,6 +27,7 @@ export default function StocksApp() {
     const fetchToken = async () => {
       try {
         const accessToken = await getAccessTokenSilently();
+        console.log(accessToken)
         setToken(accessToken);
       } catch (e) {
         console.error('Erro ao buscar token:', e);
