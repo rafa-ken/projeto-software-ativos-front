@@ -49,7 +49,7 @@ export default function StocksApp() {
     try {
       const res = await fetch(`${BASE_URL}/stocks`,{
         headers: {
-          Authorization: `Bearer ${token}`,
+     //     Authorization: `Bearer ${token}`,
         },
       });
       if (!res.ok) throw new Error(`Erro ao carregar: ${res.status}`);
@@ -79,7 +79,7 @@ export default function StocksApp() {
         headers: { 
           "Content-Type": "application/json",
 
-          "Authorization": `Bearer ${token}`,
+     //     "Authorization": `Bearer ${token}`,
          },
         body: JSON.stringify(dto)
       });
