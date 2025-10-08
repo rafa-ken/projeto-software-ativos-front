@@ -47,7 +47,7 @@ export default function StocksApp() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${BASE_URL}/stocks`,{
+      const res = await fetch(`${BASE_URL}/api/stocks`,{
         headers: {
      //     Authorization: `Bearer ${token}`,
         },
@@ -74,7 +74,7 @@ export default function StocksApp() {
     };
 
     try {
-      const res = await fetch(`${BASE_URL}/stocks`, {
+      const res = await fetch(`${BASE_URL}/api/stocks`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",
