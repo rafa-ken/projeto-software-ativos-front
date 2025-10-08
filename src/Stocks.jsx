@@ -10,6 +10,7 @@ export default function StocksApp() {
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [token, setToken] = useState(null);
 
   const [ticker, setTicker] = useState("");
   const [name, setName] = useState("");
@@ -19,7 +20,6 @@ export default function StocksApp() {
   const {
     user,
     isAuthenticated,
-    isLoading,
     getAccessTokenSilently
   } = useAuth0();
 
@@ -35,7 +35,6 @@ export default function StocksApp() {
 
     if (isAuthenticated) {
       fetchToken();
-      fetchStocks();
     }
   }, [isAuthenticated, getAccessTokenSilently]);
 
@@ -48,7 +47,11 @@ export default function StocksApp() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${BASE_URL}/stocks`);
+      const res = await fetch(`${BASE_URL}/stocks`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error(`Erro ao carregar: ${res.status}`);
       const data = await res.json();
       setStocks(Array.isArray(data) ? data : []);
@@ -73,7 +76,11 @@ export default function StocksApp() {
     try {
       const res = await fetch(`${BASE_URL}/stocks`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+
+          "Authorization": `Bearer ${token}`,
+         },
         body: JSON.stringify(dto)
       });
 
@@ -97,12 +104,12 @@ export default function StocksApp() {
   return (
     <div className="min-h-screen p-6 bg-gray-50 font-sans">
 
-              <div>
-          <img src={user.picture} alt={user.name} />
-          <h2>{user.name}</h2>
-          <p>{user.email}</p>
-          <LogoutButton />
-        </div>
+      <div>
+        <img src={user.picture} alt={user.name} />
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+        <LogoutButton />
+      </div>
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow p-6">
         <h1 className="text-2xl font-bold mb-4">Stocks — criação e listagem</h1>
 
